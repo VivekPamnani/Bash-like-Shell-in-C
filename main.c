@@ -46,7 +46,6 @@ int main()
     }
     while(1)
     {
-        signal(SIGCHLD, f_bghandler);
         getcwd(curr_dir, sizeof(curr_dir));
         // printf("c_dir %s\nh_dir %s\n", curr_dir, home_dir);
         char *loc = NULL;
@@ -74,10 +73,10 @@ int main()
             {
                 f_cd(args[i], home_dir);
             }
-            // else if(!strcmp(args[i][1], "echo"))
-            // {
-            //     f_echo(args[i]);
-            // }
+            else if(!strcmp(args[i][1], "echo"))
+            {
+                f_echo(args[i]);
+            }
             else if(!strcmp(args[i][1], "pwd"))
             {
                 f_pwd();
@@ -102,13 +101,13 @@ int main()
                 int j = strlen(args[i][0]);
                 if(args[i][0][j-1] == '&')
                 {
+                    args[i][0][j-1] = '\0';
                     f_bground(args[i]);
                 }
                 else
                 {
                     f_fground(args[i], token_parts[i]);
                 }
-                
             }
         }
     }
