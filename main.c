@@ -15,9 +15,6 @@ int main()
             break;
         }
     }
-    //printf("%s\n", home_dir);
-    struct utsname sysinfo;
-    uname(&sysinfo);
     //inp will store ';' separated commands
     char **inp = malloc(100);                                               //reminder: change length
     //inp_cmd will store the corresponding commands to inp
@@ -48,14 +45,7 @@ int main()
     {
         getcwd(curr_dir, sizeof(curr_dir));
         // printf("c_dir %s\nh_dir %s\n", curr_dir, home_dir);
-        char *loc = NULL;
-        int offset = strlen(home_dir);
-        loc = strstr(curr_dir, home_dir);
-        if(loc == NULL)
-            printf("<%s@%s:%s>", username, sysinfo.nodename, curr_dir);
-        else
-            printf("<%s@%s:~%s>", username, sysinfo.nodename, loc+offset);
-        fgets(LOL, 4096, stdin);
+        prompt(LOL, home_dir);
         inp[0] = LOL;
         strtok_r(inp[0], "\n", buff_ptr);
         inp[1] = inp[0];
