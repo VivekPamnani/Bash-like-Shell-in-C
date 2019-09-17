@@ -47,6 +47,8 @@ void f_bghandler(int sig)
                 }
             }
         }
+        f_prompt(inp_buffer, home, 0);
+        // while ((getchar()) != '\n');
         fflush(stdout);
         return;
     }

@@ -3,9 +3,12 @@
 int main()
 {
     //printf("%s", home_dir);
+    char *home_dir = malloc(4096);
+    char *LOL = malloc(4096);
     char *username = getenv("USER");
     char curr_dir[4096];
-    char *home_dir = malloc(4096); getcwd(home_dir, 4096);
+    getcwd(home_dir, 4096);
+    getcwd(curr_dir, 4096);
     home_dir = f_pinfo(-1, 0);
     for(int k = strlen(home_dir); k > 0; k--)
     {
@@ -26,7 +29,6 @@ int main()
     int token_parts[100] = {0};
     char **buff_ptr = malloc(100);
     //LOL is input buffer for stdin, change the name.
-    char *LOL = malloc(4096);
     char **contents = malloc(1000);
     char **path_contents = malloc(1000);
     int alloted = 0;
@@ -41,12 +43,14 @@ int main()
         (*args)[i] = malloc(100);
         inp[i] = malloc(4096);
     }
+    home = home_dir;
+    inp_buffer = LOL;
     while(1)
-    {
+    { 
         getcwd(curr_dir, sizeof(curr_dir));
         // printf("c_dir %s\nh_dir %s\n", curr_dir, home_dir);
-        prompt(LOL, home_dir);
-        inp[0] = LOL;
+        f_prompt(inp_buffer, home_dir, 1);
+        inp[0] = inp_buffer;
         strtok_r(inp[0], "\n", buff_ptr);
         inp[1] = inp[0];
         int tokens = tokenize(inp, ";", args, token_parts);

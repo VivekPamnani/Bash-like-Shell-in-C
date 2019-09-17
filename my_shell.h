@@ -14,7 +14,9 @@
 #include <sys/utsname.h>
 #include <sys/stat.h>
 
-void prompt(char *inp_buffer, char *home_dir);
+char *home, *inp_buffer;
+
+int f_prompt(char *inp_buffer, char *home_dir, int show_input);
 
 int get_arg(char **arg, char *delim, char *in);
 int tokenize(char **inp, char *delim, char ***args, int *token_parts);
