@@ -43,7 +43,7 @@ void f_bghandler(int sig)
                 {
                     printf("'%s' with pid %d exited with exit code %d.\n", name, ch_pid, WEXITSTATUS(status));
                     // kill(getpid(), SIGKILL);
-                    children[k] = -2;
+                    children[k] = -children[k];
                 }
             }
         }
