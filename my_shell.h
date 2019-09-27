@@ -28,12 +28,13 @@ int tokenize(char **inp, char *delim, char ***args, int *token_parts);
 int get_src(char **in, int lim);
 int get_dest(char **in, int lim);
 int get_dest_append(char **in, int lim);
+int get_pipe(char **cmd, int lim, int begin);
 int set_streams(char **cmd, int *num_tok);
 
 void f_cd(char **cd, char *home);
 void f_echo(char **echo, int num_tokens);
 void f_pwd();
-void f_ls(char **ls, char **contents, char **path_contents);
+void f_ls(char **ls, char **contents, char **path_contents, int num_tokens);
 char *f_pinfo(int r_pid, int show);
 
 void f_fground(char **fground, int parts);

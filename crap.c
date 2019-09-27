@@ -17,15 +17,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-int main() 
+int main(int argc, char** argv)
 {
-    while(1)
-    {
-        int cp = open("kass.txt", O_RDWR | O_CREAT | O_TRUNC);
-        dup2(cp, 1);
-        printf("Hello\n");
-        close(cp);
-        printf("World\n");
-        getchar();
-    }
-} 
+    
+}

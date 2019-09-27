@@ -71,8 +71,6 @@ int main()
 {
     print_dest = stdout;
     scan_src = stdin;
-    int stdout_copy = dup(1);
-    int stdin_copy = dup(0);
 
     int words[100] = {0};
     
@@ -156,7 +154,7 @@ int main()
             }
             else if(!strcmp(args[i][1], "ls"))
             {
-                f_ls(args[i], contents, path_contents, token_parts[i]);
+                f_ls(args[i], contents, path_contents);
             }
             else if(!strcmp(args[i][1], "pinfo"))
             {
@@ -173,7 +171,7 @@ int main()
             {
                 f_unsetenv(args[i]);
             }
-            else if(!strcmp(args[i][1], "quit"))
+            else if(!strcmp(args[i][1], "exit"))
             {
                 return 0;
             }
@@ -193,7 +191,5 @@ int main()
         }
         if(print_dest != stdout)
             fclose(print_dest);
-        dup2(stdin_copy, 0);
-        dup2(stdout_copy, 1);
     }
 }

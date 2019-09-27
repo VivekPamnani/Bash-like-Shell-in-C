@@ -40,7 +40,8 @@ int tokenize(char **inp, char *delim, char ***args, int *token_parts)
         tokens++;
         args[i][0] = malloc(4096);
         args[i][0] = inp[i];
-        if(i > 0) token_parts[i] = get_arg(args[i], " ", inp[i]);
+        if(i > 0)
+            token_parts[i] = get_arg(args[i], " ", inp[i]);
         inp[i+1] = *buff_ptr;
         strtok_r(inp[i+1], delim, buff_ptr);
         // printf("\n");

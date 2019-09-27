@@ -1,68 +1,60 @@
 #include "my_shell.h"
 
-int status;
+// we introduce 2 pipes
+int pipe_0[2], pipe_1[2];
 void pipe_setup(char **args, int *num_tokens, int begin_loc)
 {
-    //IMPORTANT: test get_pipe first
-    int num_child = 0;
-    // we introduce 2 pipes
-    int pipe_0[2], pipe_1[2];
-    int delim_loc = get_pipe(args, *num_tokens, begin_loc) + 1; //location of next '|' OR '\n'
+    int delim_loc = get_pipe(args, *num_tokens, 0);
     if(fork() == 0)
     {
         /* child section */
-        num_child++;
-        dup2(pipe_0[1], 1); //write end of pipe_0
-        //close pipes
+        dup2(pipe_0[1], 1); //write end of the pipe
         close(pipe_0[0]);
         close(pipe_0[1]);
         close(pipe_1[0]);
         close(pipe_1[1]);
-        //here we will execute first command in input
         // execvp(args[begin_loc]);
     }
     else
     {
-        //IMPORTANT: handle case when delim_loc == *num_tokens
-        pipe_loop(pipe_0, pipe_1, args, num_tokens, delim_loc, ++num_child);
-        close(pipe_0[0]);
-        //close pipes
-        close(pipe_0[1]);
-        close(pipe_1[0]);
-        close(pipe_1[1]);
-        //above pipe_loop OR here?
-        wait(&status);
+        /* parent section */
+        //THIS
+        pipe(args, num_tokens, begin_loc);
+        if(fork() == 0)
+        {
+            dup2(pipe_0[0], 0);
+            dup2(pipe_1[1], 1);
+            close(pipe_0[0]);
+            close(pipe_0[1]);
+            close(pipe_1[0]);
+            close(pipe_1[1]);
+            // execvp;
+        }
+        else
+        {
+            pipe
+        }
+        //OR
+        // pipe_loop();
     }
     
 }
 
-void pipe_loop(int *pip_0, int *pip_1, char **arg, int *num_tok, int beg_loc, int num_chld) //IMPORTANT: invert arguments while passing when recursion.
+void pipe_loop()
 {
-    int del_loc = get_pipe(arg, *num_tok, beg_loc) + 1; //location of next '|' OR '\n'
     if(fork() == 0)
     {
-        num_chld++;
-        dup2(pip_0[0], 0); //read end of pipe_0
-        dup2(pip_1[1], 1); //write end of pipe_1
-        //close pipes
-        close(pip_0[0]);
-        close(pip_0[1]);
-        close(pip_1[0]);
-        close(pip_1[1]);
+        dup2(pipe_0[0], 0);
+        dup2(pipe_1[1], 1);
+        close(pipe_0[0]);
+        close(pipe_0[1]);
+        close(pipe_1[0]);
+        close(pipe_1[1]);
         // execvp;
     }
     else
     {
-        pipe_loop(pip_1, pip_0, arg, num_tok, del_loc, ++num_chld);
-        //shouldn't be closing this, as parent is yet to fork
-        // close(pip_0[0]);
-        // close(pip_0[1]);
-        // close(pip_1[0]);
-        // close(pip_1[1]);
-
-        //this seems to be controversial, wait() every time a new child is forked OR wait for all at once?
-        //also, above pipe_loop OR here?
-        wait(&status);
+        // pipe_loop()
     }
     
 }
@@ -71,8 +63,6 @@ int main()
 {
     print_dest = stdout;
     scan_src = stdin;
-    int stdout_copy = dup(1);
-    int stdin_copy = dup(0);
 
     int words[100] = {0};
     
@@ -156,7 +146,7 @@ int main()
             }
             else if(!strcmp(args[i][1], "ls"))
             {
-                f_ls(args[i], contents, path_contents, token_parts[i]);
+                f_ls(args[i], contents, path_contents);
             }
             else if(!strcmp(args[i][1], "pinfo"))
             {
@@ -173,7 +163,7 @@ int main()
             {
                 f_unsetenv(args[i]);
             }
-            else if(!strcmp(args[i][1], "quit"))
+            else if(!strcmp(args[i][1], "exit"))
             {
                 return 0;
             }
@@ -193,7 +183,5 @@ int main()
         }
         if(print_dest != stdout)
             fclose(print_dest);
-        dup2(stdin_copy, 0);
-        dup2(stdout_copy, 1);
     }
 }

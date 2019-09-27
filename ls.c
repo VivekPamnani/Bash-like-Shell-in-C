@@ -1,6 +1,6 @@
 #include "my_shell.h"
 
-void f_ls(char **ls, char **contents, char **path_contents)
+void f_ls(char **ls, char **contents, char **path_contents, int num_tokens)
 {
     // char **contents = malloc(1000);
     // char **path_contents = malloc(1000);
@@ -38,7 +38,7 @@ void f_ls(char **ls, char **contents, char **path_contents)
         ls[arg_no][0] = '.';
         ls[arg_no][1] = '\0';
     }
-    for (int i = arg_no; strcmp(ls[i], ""); i++)
+    for (int i = arg_no; strcmp(ls[i], "") && i <= num_tokens; i++)
     {
         folder = opendir(ls[i]);
         if(folder == NULL) 

@@ -1,6 +1,6 @@
 #include "my_shell.h"
 
-char * f_prompt(char *inp_buffer, char *home, int accept_input)
+char *f_prompt(char *inp_buffer, char *home, int accept_input)
 {
     char *prompt = malloc(4096);
     char *username = getenv("USER");
